@@ -2,7 +2,6 @@
 An experimental Python project exploring emotion simulation, memory, and personality in AI systems.
 
 ## Planned  Features
-- Memory System
 - Emotion Detection
 - Emotion-Based Responses
 - Mood-Aware Conversations
@@ -10,6 +9,7 @@ An experimental Python project exploring emotion simulation, memory, and persona
   - Jokes
   - Inspirational Stories
   - Motivation
+-  Memory System
  
 ## Future Roadmap
 - Personality Evolution
