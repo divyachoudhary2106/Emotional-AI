@@ -1,3 +1,17 @@
+import os
+import google.generativeai as genai
+
+# Gemini API Key from environment variable
+API_KEY = os.getenv("GEMINI_API_KEY")
+
+if not API_KEY:
+    print("Error: GEMINI_API_KEY not found.")
+    exit()
+
+genai.configure(api_key=API_KEY)
+
+model = genai.GenerativeModel("gemini-2.5-flash")
+
 message = input("How are you feeling today? ").lower()
 
 sad_words = ["sad", "upset", "lonely", "depressed", "stressed"]
@@ -18,43 +32,88 @@ for word in angry_words:
     if word in message:
         emotion = "angry"
 
-print("Detected Emotion:", emotion)
+print("\nDetected Emotion:", emotion)
 
 if emotion == "sad":
-    print("Hey, that sounds rough.")
-    print("Life is being a little dramatic today, huh?")
-    print("But don't worry, I'm here with you. 💙")
-    print("Need a joke, a story, or a motivation boost?")
+
+    print("\nHey, that sounds rough.")
+    print("Need a joke, story, or motivation boost?")
 
     choice = input(
         "\nChoose:\n"
-        "1. Joke 😆\n"
-        "2. Story 📖\n"
-        "3. Motivation 💪\n"
+        "1. Joke\n"
+        "2. Story\n"
+        "3. Motivation\n"
+        "Enter choice: "
     )
 
-  if choice == "1":
-        print(f"\nI see. You mentioned: {situation}")
-        print("Let me cheer you up with a joke!")
-        print(get_joke())
+    if choice == "1":
+
+        prompt = f"""
+        The user is feeling sad.
+
+        User message: {message}
+
+        Tell a funny and cheerful joke.
+        """
 
     elif choice == "2":
-        print(get_story())
 
-    elif choice == "3":
-        print(get_motivation())
+        prompt = f"""
+        User message: {message}
+
+        Tell a short inspiring story.
+        """
+
+    else:
+
+        prompt = f"""
+        User message: {message}
+
+        Give a powerful motivational message.
+        """
+
+    response = model.generate_content(prompt)
+    print("\n" + response.text)
 
 elif emotion == "happy":
-    print("Ayy, let's gooo! 🎉")
-    print("Love that energy.")
-    print("Whatever happened today, keep it up! 😎")
+
+    prompt = f"""
+    User message: {message}
+
+    The user is feeling happy.
+
+    Respond in a fun, energetic and positive way.
+    Celebrate their happiness.
+    """
+
+    response = model.generate_content(prompt)
+    print("\n" + response.text)
 
 elif emotion == "angry":
-    print("Okay... somebody clearly tested your patience today. 😅")
-    print("Before we start a villain arc, let's calm down a bit.")
-    print("Want to talk about it?")
+
+    prompt = f"""
+    User message: {message}
+
+    The user is feeling angry.
+
+    Give a calm and supportive response.
+    Help the user relax.
+    """
+
+    response = model.generate_content(prompt)
+    print("\n" + response.text)
 
 else:
-    print("Hmm... I'm not fully sure how you're feeling yet. 🤔")
-    print("Tell me more, I'm listening. 👀") 
+
+    prompt = f"""
+    User message: {message}
+
+    The user's emotion is unclear.
+
+    Respond naturally and ask a thoughtful follow-up question.
+    """
+
+    response = model.generate_content(prompt)
+    print("\n" + response.text)
   
